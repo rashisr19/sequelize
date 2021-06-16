@@ -98,6 +98,20 @@ app.delete('/users/:uuid', async(req, res) => {
     }
 })
 
+app.delete('/posts/:uuid', async(req, res) => {
+    const uuid = req.params.uuid;
+    try{
+        const post = await Post.findOne({
+            where: {uuid}
+        });
+        await post.destroy();
+        return res.json({msg:'post deleted!'});
+    }catch(err) {
+        console.log(err);
+        return res.status(500).json({error: 'Something went wrong!'});
+    }
+})
+
 app.listen({port : 5000}, async() => {
     console.log(`Server up and running on http://localhost:5000`);
     await sequelize.authenticate();
